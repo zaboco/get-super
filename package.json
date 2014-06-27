@@ -1,0 +1,27 @@
+{
+  "name": "get-super",
+  "version": "0.1.0",
+  "description": "Gets the super method of an object",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --ui tdd test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zaboco/get-super.git"
+  },
+  "keywords": [
+    "super",
+    "prototype"
+  ],
+  "author": "Bogdan Zaharia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zaboco/get-super/issues"
+  },
+  "homepage": "https://github.com/zaboco/get-super",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1"
+  }
+}
