@@ -27,6 +27,24 @@ childInstance = new ChildClass()
 $super(childInstance, 'toString')() // BaseClass.prototype.toString.call(childInstance)
 ```
 
+###$super.injectInto(klass)
+Injects the method $super into `klass.prototype`:
+```js
+function ChildClass(arg) {
+	this.$super()(arg); // BaseClass.call(this, arg);
+}
+ChildClass.prototype = Object.create(BaseClass.prototype);
+ChildClass.prototype.constructor = ChildClass;
+
+$super.injectInto(ChildClass) // must be called after setting the prototype of ChildClass
+
+ChildClass.prototype.toString = function() {
+	return 'child: ' + this.$super('toString')();
+}
+```
+
+Of course, all objects can have access to `$super` by doing `$super.injectInto(Object)`
+
 ##Notes
 * If the method is not found, the method does nothing (and thus returns `undefined`)
 * For instances of `Object`, a `TypeError` will be thrown when calling `$super`. 

@@ -66,11 +66,11 @@ suite('inject', function() {
 	}
 	InjectedSubClass.prototype = Object.create(BaseClass.prototype);
 	InjectedSubClass.prototype.constructor = InjectedSubClass;
+	$super.injectInto(InjectedSubClass);
+
 	InjectedSubClass.prototype.value = function() {
 		return ['sub', this.$super('value')()].join(':')
 	};
-
-	$super.injectInto(InjectedSubClass);
 
 	var injectedInstance = new InjectedSubClass(10);
 
