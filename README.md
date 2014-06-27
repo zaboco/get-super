@@ -1,5 +1,4 @@
 #get-super
----------
 
 `npm install --save get-super`
 
@@ -28,14 +27,32 @@ childInstance = new ChildClass()
 $super(childInstance, 'toString')() // BaseClass.prototype.toString.call(childInstance)
 ```
 
+###$super.injectInto(klass)
+Injects the method $super into `klass.prototype`:
+```js
+function ChildClass(arg) {
+	this.$super()(arg); // BaseClass.call(this, arg);
+}
+ChildClass.prototype = Object.create(BaseClass.prototype);
+ChildClass.prototype.constructor = ChildClass;
+
+$super.injectInto(ChildClass) // must be called after setting the prototype of ChildClass
+
+ChildClass.prototype.toString = function() {
+	return 'child: ' + this.$super('toString')();
+}
+```
+
+Of course, all objects can have access to `$super` by doing `$super.injectInto(Object)`
+
 ##Notes
-* if the method is not found, the method does nothing (and thus returns `undefined`)
-* if the object is not an instance of a subclass, a `TypeError` will be thrown
-* `constructor` must be set on the Child `prototype` in order for `$super` to work
+* If the method is not found, the method does nothing (and thus returns `undefined`)
+* For instances of `Object`, a `TypeError` will be thrown when calling `$super`. 
+* `constructor` must be set on the Child `prototype` in order for `$super` to work:
 ```js
 ChildClass.prototype.constructor = ChildClass
 ```
-* objects created with Object.create will not have access to their `prototype`'s super method:
+* Objects created with Object.create will not have access to their `prototype`'s super method:
 ```js
 var improperSubInstance = Object.create(baseInstance);
 console.log($super(improperSubInstance, 'toString')()); // undefined
@@ -76,7 +93,7 @@ bastard.name = 'Tony';
 bastard.parent = father;
 console.log($super(bastard, 'getName')()); // undefined
 
-var notAnInstance = {};
+var bareObject = {};
 // the next line throws TypeError
-// console.log($super(notAnInstance, 'toString')()); 
+// console.log($super(bareObject, 'toString')()); 
 ```
