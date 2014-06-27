@@ -59,3 +59,26 @@ suite('super', function() {
 	});
 
 });
+
+suite('inject', function() {
+	function InjectedSubClass(val) {
+		this.$super()(val);
+	}
+	InjectedSubClass.prototype = Object.create(BaseClass.prototype);
+	InjectedSubClass.prototype.constructor = InjectedSubClass;
+	InjectedSubClass.prototype.value = function() {
+		return ['sub', this.$super('value')()].join(':')
+	};
+
+	$super.injectInto(InjectedSubClass);
+
+	var injectedInstance = new InjectedSubClass(10);
+
+	test('constructor works', function() {
+		injectedInstance.val.should.eql(10);
+	});
+
+	test('method works', function() {
+		injectedInstance.value().should.eql('sub:base:10');
+	});
+});
